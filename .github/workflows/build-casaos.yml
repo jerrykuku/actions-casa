@@ -3,9 +3,9 @@
 name: Build CasaOS
 
 on:
-  push:
-    tags:
-      - 'v*'
+  release:
+    types:
+      - created
   
 env:
   REPO_URL: https://github.com/IceWhaleTech/CasaOS.git
@@ -24,6 +24,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         
       - name: Initialization environment
         env:
@@ -83,5 +89,5 @@ jobs:
         id: upload_assets
         uses: shogo82148/actions-upload-release-asset@v1
         with:
-          upload_url: ${{ github.event.release.upload_url }}
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: $GITHUB_WORKSPACE/casa/upload/linux-amd64-casaos.tar.gz
