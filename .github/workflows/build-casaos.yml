@@ -48,6 +48,16 @@ jobs:
           git clone $REPO_URL -b $REPO_BRANCH casa
           ln -sf /workdir/casa $GITHUB_WORKSPACE/casa
           ls
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          
+      - name: Build frontend with nodejs and yarn
+        run: |
+          cd casa/CasaOS-UI
+          yarn install
+          yarn build
           
       - name: Build with xgo
         uses: crazy-max/ghaction-xgo@v1
@@ -56,7 +66,7 @@ jobs:
           xgo_version: latest
           go_version: ${{ matrix.go_version }}
           dest: build
-          prefix: myapp
+          prefix: casa
           targets: linux/amd64,linux/arm64
           v: true
           x: false
