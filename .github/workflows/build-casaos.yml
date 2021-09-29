@@ -14,11 +14,7 @@ on:
 env:
   REPO_URL: https://github.com/IceWhaleTech/CasaOS.git
   REPO_BRANCH: main
-  UPLOAD_BIN_DIR: false
-  UPLOAD_FIRMWARE: true
-  UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: false
-  UPLOAD_RELEASE: false
+  PACK_SH: pack.sh
   TZ: Asia/Shanghai
 
 jobs:
@@ -81,3 +77,17 @@ jobs:
           cd casa/build
           ls
           echo "::set-output name=status::success"
+          
+      - name: Pack builds
+        run: |
+          chmod +x $PACK_SH
+          $GITHUB_WORKSPACE/$PACK_SH
+          
+      - name: Publish Release
+        uses: meeDamian/github-release@2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: /workdir/casa/upload/
+          tag: v1.30
+          name: ceshi
+          allow_override: true
