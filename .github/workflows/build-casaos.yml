@@ -45,7 +45,7 @@ jobs:
         working-directory: /workdir
         run: |
           df -hT $PWD
-          git clone $REPO_URL -b $REPO_BRANCH casa
+          git clone $REPO_URL -b $REPO_BRANCH --recursive casa
           ln -sf /workdir/casa $GITHUB_WORKSPACE/casa
           ls
       - name: Use Node.js
@@ -55,7 +55,7 @@ jobs:
           
       - name: Build frontend with nodejs and yarn
         run: |
-          cd casa/CasaOS-UI
+          cd casa/UI
           ls
           yarn install
           yarn build
