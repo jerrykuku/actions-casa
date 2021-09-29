@@ -47,7 +47,6 @@ jobs:
           df -hT $PWD
           git clone $REPO_URL -b $REPO_BRANCH casa
           ln -sf /workdir/casa $GITHUB_WORKSPACE/casa
-          cd casa
           ls
           
       - name: Build with xgo
