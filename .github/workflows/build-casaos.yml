@@ -54,6 +54,7 @@ jobs:
       run: |
         cd casa
         make build-backend
+        ls
         echo "::set-output name=status::success"
     - name: Check space usage
       if: (!cancelled())
