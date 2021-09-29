@@ -67,6 +67,6 @@ jobs:
       - name: List Files
         run: |
           ls
-          cd github.com/IceWhaleTech
+          cd casa/build
           ls
           echo "::set-output name=status::success"
