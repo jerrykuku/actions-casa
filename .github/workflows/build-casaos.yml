@@ -54,6 +54,7 @@ jobs:
       id: compile
       run: |
         cd casa
+        ls
         xgo --targets=linux/arm64 main.go
         ls
         cd github.com/IceWhaleTech
