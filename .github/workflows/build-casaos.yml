@@ -3,13 +3,9 @@
 name: Build CasaOS
 
 on:
-  repository_dispatch:
-  workflow_dispatch:
-    inputs:
-      ssh:
-        description: 'SSH connection to Actions'
-        required: false
-        default: 'false'
+  push:
+    tags:
+      - 'v*'
   
 env:
   REPO_URL: https://github.com/IceWhaleTech/CasaOS.git
@@ -83,11 +79,9 @@ jobs:
           chmod +x $PACK_SH
           $GITHUB_WORKSPACE/$PACK_SH
           
-      - name: Publish Release
-        uses: meeDamian/github-release@2.0
+      - name: Upload assets
+        id: upload_assets
+        uses: shogo82148/actions-upload-release-asset@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          files: /workdir/casa/upload/
-          tag: v1.30
-          name: ceshi
-          allow_override: true
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: $GITHUB_WORKSPACE/casa/upload/linux-amd64-casaos.tar.gz
