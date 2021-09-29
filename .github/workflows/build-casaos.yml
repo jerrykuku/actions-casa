@@ -3,14 +3,9 @@
 name: Build CasaOS
 
 on:
-  repository_dispatch:
-  workflow_dispatch:
-    inputs:
-      ssh:
-        description: 'SSH connection to Actions'
-        required: false
-        default: 'false'
-        
+  pull_request:
+  push:
+  
 env:
   REPO_URL: https://github.com/IceWhaleTech/CasaOS.git
   REPO_BRANCH: main
@@ -20,46 +15,50 @@ env:
   UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: false
   TZ: Asia/Shanghai
-  
+
 jobs:
-  build:
-    runs-on: ubuntu-20.04
-
+  xgo:
+    strategy:
+      fail-fast: false
+      matrix:
+        go_version:
+          - 1.17.1
+    runs-on: ubuntu-latest
     steps:
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ^1.17.1
-    - name: Checkout
-      uses: actions/checkout@main
-
-    - name: Initialization environment
-      env:
-        DEBIAN_FRONTEND: noninteractive
-      run: |
-        docker pull karalabe/xgo-latest
-        go get github.com/karalabe/xgo
-        sudo timedatectl set-timezone "$TZ"
-        sudo mkdir -p /workdir
-        sudo chown $USER:$GROUPS /workdir
-        
-    - name: Clone source code
-      working-directory: /workdir
-      run: |
-        df -hT $PWD
-        git clone $REPO_URL -b $REPO_BRANCH casa
-        ln -sf /workdir/casa $GITHUB_WORKSPACE/casa
-        
-    - name: Compile 
-      id: compile
-      run: |
-        cd casa
-        ls
-        xgo --targets=linux/arm64 main.go
-        ls
-        cd github.com/IceWhaleTech
-        ls
-        echo "::set-output name=status::success"
-    - name: Check space usage
-      if: (!cancelled())
-      run: df -hT
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Initialization environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo timedatectl set-timezone "$TZ"
+          sudo mkdir -p /workdir
+          sudo chown $USER:$GROUPS /workdir
+          
+      - name: Clone source code
+        working-directory: /workdir
+        run: |
+          df -hT $PWD
+          git clone $REPO_URL -b $REPO_BRANCH casa
+          ln -sf /workdir/casa $GITHUB_WORKSPACE/casa
+          cd casa
+          
+      - name: Build with xgo
+        uses: crazy-max/ghaction-xgo@v1
+        with:
+          xgo_version: latest
+          go_version: ${{ matrix.go_version }}
+          dest: build
+          prefix: myapp
+          targets: windows/386,windows/amd64,linux/386,linux/amd64,darwin/386,darwin/amd64
+          v: true
+          x: false
+          race: false
+          ldflags: -s -w
+          buildmode: default
+      - name: List Files
+        run: |
+          ls
+          cd github.com/IceWhaleTech
+          ls
+          echo "::set-output name=status::success"
