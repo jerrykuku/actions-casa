@@ -83,5 +83,5 @@ jobs:
         id: upload_assets
         uses: shogo82148/actions-upload-release-asset@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ github.event.release.upload_url }}
           asset_path: $GITHUB_WORKSPACE/casa/upload/linux-amd64-casaos.tar.gz
