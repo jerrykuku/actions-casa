@@ -52,7 +52,7 @@ jobs:
       - name: Build with xgo
         uses: crazy-max/ghaction-xgo@v1
         with:
-          working_dir: $GITHUB_WORKSPACE/casa
+          working_dir: /workdir/casa
           xgo_version: latest
           go_version: ${{ matrix.go_version }}
           dest: build
