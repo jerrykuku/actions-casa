@@ -36,7 +36,7 @@ jobs:
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo add-apt-repository ppa:longsleep/golang-backports
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq install golang-go build-essential
+        sudo -E apt-get -qq install golang-go upx
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
@@ -45,17 +45,5 @@ jobs:
     - name: Clone source code
       working-directory: /workdir
       run: |
-        df -hT $PWD
-        git clone $REPO_URL -b $REPO_BRANCH casa
-        ln -sf /workdir/casa $GITHUB_WORKSPACE/casa
-
-    - name: Compile 
-      id: compile
-      run: |
-        cd casa
-        make build-backend
-        ls
-        echo "::set-output name=status::success"
-    - name: Check space usage
-      if: (!cancelled())
-      run: df -hT
+        docker pull karalabe/xgo-latest
+        go get github.com/karalabe/xgo
