@@ -1,5 +1,6 @@
 #!/bin/bash
 final_path=$1
+echo $final_path
 #sudo mkdir -p $final_path
 pack_path=casa/casaos
 path=casa/build
