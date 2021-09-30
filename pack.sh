@@ -2,7 +2,7 @@
 PACK_PATH=casaos
 BUILD_PATH=build
 SUFFIX="-casaos"
-files=$(ls $path)
+files=$(ls $BUILD_PATH)
 for filename in $files
 do
   sudo rm -rf $PACK_PATH
@@ -13,6 +13,6 @@ do
   sudo cp -r casa/conf $PACK_PATH
   sudo cp -r casa/shell $PACK_PATH
   sudo cp -rf $BUILD_PATH/$filename $PACK_PATH/casaos
-  sudo tar zcvf "${package_name}.tar.gz" casaos
+  sudo tar zcvf "${package_name}.tar.gz" $PACK_PATH
   ls
 done
