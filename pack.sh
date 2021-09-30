@@ -1,5 +1,5 @@
 #!/bin/bash
-final_path=casa/upload
+final_path=$1
 sudo mkdir -p $final_path
 pack_path=casa/casaos
 path=casa/build
