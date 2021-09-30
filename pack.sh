@@ -1,6 +1,6 @@
 #!/bin/bash
 final_path=$1
-echo $final_path
+echo $
 #sudo mkdir -p $final_path
 pack_path=casa/casaos
 path=casa/build
@@ -17,7 +17,7 @@ do
   sudo cp -r casa/shell $pack_path
   sudo cp -rf $path/$filename $pack_path/casaos
   cd casa
-  sudo tar zcvf "$final_path/${package_name}.tar.gz" casaos
+  sudo tar zcvf "${package_name}.tar.gz" casaos
   cd $final_path
   ls
   cd .. 
