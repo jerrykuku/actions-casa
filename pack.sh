@@ -17,5 +17,7 @@ do
   sudo cp -rf $path/$filename $pack_path/casaos
   cd casa
   sudo tar zcvf "$final_path/${package_name}.tar.gz" casaos
+  cd $final_path
+  ls
   cd .. 
 done
