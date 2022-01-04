@@ -27,23 +27,7 @@ jobs:
           - 1.17.1
     runs-on: ubuntu-latest
     steps:
-        
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@v1.2.3
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        
-      - name: Initialization environment
-        env:
-          DEBIAN_FRONTEND: noninteractive
-        run: |
-          sudo timedatectl set-timezone "$TZ"
-          sudo mkdir -p /workdir
-          sudo chown $USER:$GROUPS /workdir
-          
       - name: Clone source code
-        working-directory: /workdir
         run: |
           sudo apt -y install binutils
           strings  /lib/x86_64-linux-gnu/libc.so.6 | grep GLIBC_
